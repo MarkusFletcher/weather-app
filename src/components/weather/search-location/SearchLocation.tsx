@@ -4,7 +4,7 @@ import s from './SearchLocation.module.scss'
 import { WeatherService } from '../../../services/weather.service'
 
 interface Props {
-  setLocation: React.Dispatch<React.SetStateAction<string>>
+  setLocation: (location: string) => void
   close: () => void
 }
 
@@ -16,7 +16,6 @@ export const SearchLocation: React.FC<Props> = ({ setLocation, close }) => {
     if (!searchQuery) return
     WeatherService.searchLocation(searchQuery).then(data => {
       setLocations(data)
-      console.log(locations)
     })
   }
 
