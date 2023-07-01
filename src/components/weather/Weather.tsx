@@ -5,12 +5,18 @@ import { SearchLocation } from './search-location'
 import { Modal } from '../modal'
 import s from './Weather.module.scss'
 import { IWeatherCurrentData } from '../../types/weather.types'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
+
+const INITIAL_LOCATION = 'Moscow'
 
 export const Weather = () => {
   const [weather, setWeather] = useState<IWeatherCurrentData>(
     {} as IWeatherCurrentData,
   )
-  const [location, setLocation] = useState<string>('Moscow')
+  const [location, setLocation] = useLocalStorage<string>(
+    'location',
+    INITIAL_LOCATION,
+  )
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [skyColor, setSkyColor] = useState<string>('')
@@ -24,31 +30,34 @@ export const Weather = () => {
   }
 
   const setCurrentWeather = () => {
-    WeatherService.currentWeather(location).then(data => {
-      setWeather(data)
-      setIsLoading(false)
-      console.log(data)
-      setSkyColor(data.current.is_day ? '#81A1DB' : '#41516E')
-    })
+    if (location.length > 0) {
+      WeatherService.currentWeather(location)
+        .then(data => {
+          setWeather(data)
+          setIsLoading(false)
+          setSkyColor(data.current.is_day ? '#81A1DB' : '#41516E')
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
   }
 
   const getUserLocation = (): void => {
     navigator.geolocation.getCurrentPosition(position => {
-      const location = `${position.coords.latitude},${position.coords.longitude}`
-      setLocation(location)
-      setCurrentWeather()
-
-      console.log(location)
+      if (location === INITIAL_LOCATION) {
+        const location = `${position.coords.latitude},${position.coords.longitude}`
+        setLocation(location)
+      }
     })
   }
 
   useEffect(() => {
+    getUserLocation()
     setCurrentWeather()
 
     return () => {}
   }, [location])
-
-  // useMemo(() => getUserLocation, [])()
 
   return !isLoading ? (
     <div className={s.weather} style={{ backgroundColor: skyColor }}>
