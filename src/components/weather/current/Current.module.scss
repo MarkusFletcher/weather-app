@@ -4,11 +4,18 @@
   padding: 20px;
   height: 100%;
   .imageStatus {
-    flex: 1 1 50%;
+    flex: 0 1 24%;
+    // flex-basis: 24%;
   }
   .info {
     flex: 1 1 50%;
     text-align: right;
+    .field {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px;
+    }
   }
   .time {
     font-size: 28px;
@@ -19,6 +26,10 @@
     line-height: 1;
   }
   .location {
+    text-align: left;
     cursor: pointer;
+  }
+  .condition {
+    margin-top: 8px;
   }
 }
