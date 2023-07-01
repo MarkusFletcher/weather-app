@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react'
+import ReactDOM from 'react-dom'
 import s from './Modal.module.scss'
 import { TfiClose } from 'react-icons/tfi'
 
@@ -8,7 +9,7 @@ interface Props extends PropsWithChildren {
 }
 
 export const Modal: React.FC<Props> = ({ children, isOpen, close }) => {
-  return (
+  return ReactDOM.createPortal(
     <>
       {isOpen && (
         <div className={s.modal}>
@@ -20,6 +21,7 @@ export const Modal: React.FC<Props> = ({ children, isOpen, close }) => {
           {children}
         </div>
       )}
-    </>
+    </>,
+    document.getElementById('root-modal') as HTMLElement,
   )
 }
