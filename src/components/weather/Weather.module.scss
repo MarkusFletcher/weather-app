@@ -1,0 +1,25 @@
+.weather {
+  width: 100%;
+  // background-color: #300022;
+  // background-color: #81a1db;
+
+  .head {
+    background: url();
+  }
+  .city {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background-image: url(../../assets/images/fog.png);
+    }
+  }
+  .cityImg {
+    width: 100%;
+    height: auto;
+  }
+}

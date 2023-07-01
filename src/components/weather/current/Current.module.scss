@@ -1,0 +1,24 @@
+.current {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+  .imageStatus {
+    flex: 1 1 50%;
+  }
+  .info {
+    flex: 1 1 50%;
+    text-align: right;
+  }
+  .time {
+    font-size: 28px;
+  }
+  .temperature {
+    font-size: 58px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .location {
+    cursor: pointer;
+  }
+}
