@@ -3,23 +3,39 @@ import { WeatherService } from '../../services/weather.service'
 import { Current } from './current'
 import { SearchLocation } from './search-location'
 import { Modal } from '../modal'
+import { Forecast } from './forecast'
 import s from './Weather.module.scss'
-import { IWeatherCurrentData } from '../../types/weather.types'
+import {
+  IWeatherCurrentData,
+  IWeatherForecastData,
+} from '../../types/weather.types'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 const INITIAL_LOCATION = 'Moscow'
+enum SkyColors {
+  DAY = '129, 161, 219',
+  NIGHT = '65, 81, 110',
+}
+const HeadBg = {
+  DAY: `linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(${SkyColors.DAY}, 0.76) 15%, rgba(${SkyColors.DAY}, 1) 30%)`,
+  NIGHT: `linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(${SkyColors.NIGHT}, 0.76) 15%, rgba(${SkyColors.NIGHT}, 1) 30%)`,
+}
 
 export const Weather = () => {
   const [weather, setWeather] = useState<IWeatherCurrentData>(
     {} as IWeatherCurrentData,
+  )
+  const [forecast, setForecast] = useState<IWeatherForecastData>(
+    {} as IWeatherForecastData,
   )
   const [location, setLocation] = useLocalStorage<string>(
     'location',
     INITIAL_LOCATION,
   )
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [skyColor, setSkyColor] = useState<string>('')
+  const [isLoadingCurrent, setIsLoadingCurrent] = useState<boolean>(true)
+  const [isLoadingForecast, setIsLoadingForecast] = useState<boolean>(true)
+  const [skyColor, setSkyColor] = useState<string>('#81A1DB')
 
   const closeSearch = () => {
     setIsSearchOpen(false)
@@ -34,12 +50,17 @@ export const Weather = () => {
       WeatherService.currentWeather(location)
         .then(data => {
           setWeather(data)
-          setIsLoading(false)
+          setIsLoadingCurrent(false)
           setSkyColor(data.current.is_day ? '#81A1DB' : '#41516E')
         })
         .catch(err => {
           console.error(err)
         })
+      WeatherService.forecastWeather(location).then(data => {
+        setForecast(data)
+        setIsLoadingForecast(false)
+        console.log(data)
+      })
     }
   }
 
@@ -59,14 +80,24 @@ export const Weather = () => {
     return () => {}
   }, [location])
 
-  return !isLoading ? (
+  return !isLoadingCurrent ? (
     <div className={s.weather} style={{ backgroundColor: skyColor }}>
-      <div className={s.head}>
+      <header
+        className={s.head}
+        style={{
+          background: weather.current.is_day ? HeadBg.DAY : HeadBg.NIGHT,
+        }}
+      >
         <Current weather={weather} openSearch={openSearch}></Current>
-        <div className={s.city}>
-          <img className={s.cityImg} src='city.png' alt='city'></img>
-        </div>
+      </header>
+      <div className={s.city}>
+        <img className={s.cityImg} src='city.png' alt='city'></img>
       </div>
+      {!isLoadingForecast ? (
+        <Forecast forecast={forecast}></Forecast>
+      ) : (
+        <>Loading...</>
+      )}
       <Modal isOpen={isSearchOpen} close={closeSearch}>
         <SearchLocation
           setLocation={setLocation}
