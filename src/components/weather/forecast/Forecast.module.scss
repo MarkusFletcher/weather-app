@@ -1,0 +1,69 @@
+.forecast {
+  background-color: #fff;
+  color: #333;
+  .forecastHours {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .item {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      .time {
+        font-size: 12px;
+      }
+      .icon {
+        width: 32px;
+        height: auto;
+      }
+    }
+  }
+  .forecastDays {
+    .dayItem {
+      padding: 10px;
+      border-bottom: 1px solid #dfe2e7;
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .detail {
+        padding-top: 10px;
+      }
+      .icon {
+        width: 32px;
+        height: auto;
+      }
+      .dayOfWeek {
+        line-height: 1;
+      }
+      .daylightHours {
+        margin-left: auto;
+        margin-right: 10px;
+        display: flex;
+        gap: 10px;
+        .item {
+          display: flex;
+          flex-direction: column;
+          span {
+            font-size: 8px;
+          }
+        }
+      }
+      .temp {
+        // margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        line-height: 1;
+      }
+    }
+  }
+}
