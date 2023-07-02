@@ -25,5 +25,5 @@ export const getDayOfWeek = (date: string, lang: string = 'ru'): string => {
   }
   const dateObject: Date = new Date(date)
 
-  return days[lang][dateObject.getDay()]
+  return days[lang]?.[dateObject.getDay()]
 }
