@@ -5,6 +5,7 @@ import { convertTimeFormat } from '../../../utils/convertTimeFormat'
 import { BsSunriseFill, BsSunsetFill } from 'react-icons/bs'
 import { useState } from 'react'
 import { ForecastHours } from './Forecast.hours'
+import clsx from 'clsx'
 
 interface Props {
   day: IForecastDay
@@ -38,11 +39,12 @@ export const ForecastDay: React.FC<Props> = ({ day }) => {
           <span>{day.day.maxtemp_c}°</span>
         </div>
       </div>
-      {isOpenDetail && (
-        <div className={s.detail}>
+
+      <div className={clsx(s.detail, { [s.open]: isOpenDetail })}>
+        <div>
           <ForecastHours hours={day.hour}></ForecastHours>
         </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -36,6 +36,18 @@
       }
       .detail {
         padding-top: 10px;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.25s, transform 0.25s;
+        transform: scale(0.5);
+        &.open {
+          grid-template-rows: 1fr;
+          transform: scale(1);
+        }
+        & > div {
+          min-height: 0;
+        }
       }
       .icon {
         width: 32px;
