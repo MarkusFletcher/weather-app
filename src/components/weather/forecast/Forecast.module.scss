@@ -44,6 +44,7 @@
         &.open {
           grid-template-rows: 1fr;
           transform: scale(1);
+          overflow-x: auto;
         }
         & > div {
           min-height: 0;
