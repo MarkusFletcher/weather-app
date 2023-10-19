@@ -59,7 +59,6 @@ export const Weather = () => {
       WeatherService.forecastWeather(location).then(data => {
         setForecast(data)
         setIsLoadingForecast(false)
-        console.log(data)
       })
     }
   }
